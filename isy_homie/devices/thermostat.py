@@ -35,6 +35,7 @@ class Thermostat(Base, Device_Thermostat):
     def __init__(self, isy_device=None, homie_settings=None, mqtt_settings=None):
 
         Base.__init__(self, isy_device)
+
         Device_Thermostat.__init__(
             self,
             self.get_homie_device_id(),
@@ -47,6 +48,8 @@ class Thermostat(Base, Device_Thermostat):
             iprop_value = self.isy_device.get_property(isy_prop)
             if iprop_value is not None:
                 self.property_change(isy_prop, iprop_value)
+
+        self.add_communication_error_property()
 
     def get_homie_device_id(self):
         return "thermostat-" + Base.get_homie_device_id(self)

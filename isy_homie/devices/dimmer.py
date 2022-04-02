@@ -23,9 +23,13 @@ class Dimmer(Base, Device_Dimmer):
         self.paddle = Property_String(node, "paddleaction", "Paddle Action")
         node.add_property(self.paddle)
 
+        self.add_communication_error_property()
+        
         level = self.isy_device.get_property("level")
         if level is not None:
             self.property_change("level", level)
+
+        self.state = self.isy_device.get_property("status")
 
     def get_homie_device_id(self):
         return "dimmer-" + Base.get_homie_device_id(self)

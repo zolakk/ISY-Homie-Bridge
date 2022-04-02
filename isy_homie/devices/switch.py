@@ -3,6 +3,11 @@
 from homie.device_switch import Device_Switch
 from .base import Base
 
+
+from homie.node.property.property_integer import Property_Integer
+from homie.node.property.property_boolean import Property_Boolean
+from homie.node.node_base import Node_Base
+
 from homie.node.property.property_string import Property_String
 
 
@@ -23,9 +28,13 @@ class Switch(Base, Device_Switch):
         self.paddle = Property_String(node, "paddle-action", "Paddle Action")
         node.add_property(self.paddle)
 
+        self.add_communication_error_property()
+
         onoff = self.isy_device.get_property("onoff")
         if onoff is not None:
             self.property_change("onoff", onoff)
+
+        self.state = self.isy_device.get_property("status")
 
     def get_homie_device_id(self):
         return "switch-" + Base.get_homie_device_id(self)
